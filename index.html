@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ramsey Theory Animation</title>
+<title>2026 ICM Notes</title>
 <!-- MathJax for rendering LaTeX math formulas -->
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -20,8 +20,8 @@
     background-color: #f9f9f9;
   }
   .content-wrapper {
-    /* DOUBLED SIZE: Increased from 800px to 1600px so the slides are huge */
-    max-width: 1600px; 
+    /* REDUCED SIZE: 1/3 smaller than 1600px */
+    max-width: 1067px; 
     width: 100%;
     background: #fff;
     padding: 30px;
@@ -36,6 +36,34 @@
   h1 {
     color: #2c3e50;
     margin-top: 0;
+    text-align: center;
+    font-size: 2.5em;
+  }
+  h2 {
+    color: #34495e;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    margin-top: 40px;
+  }
+  /* Styling for the Table of Contents */
+  .toc {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 20px 40px;
+    margin: 30px 0;
+  }
+  .toc ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .toc a {
+    text-decoration: none;
+    color: #0366d6;
+    font-weight: 500;
+  }
+  .toc a:hover {
+    text-decoration: underline;
   }
   #stack-container {
     position: relative;
@@ -76,9 +104,41 @@
 <div class="content-wrapper">
   
   <div class="text-content">
-    <h1>A short web animation explaining a classic Ramsey number proof</h1>
+    <h1>2026 ICM Notes</h1>
     
-    <p>I really enjoyed the talk <em>Recent Results in Ramsey Theory</em> given by Robert Morris at the 2026 ICM.</p>
+    <!-- Table of Contents -->
+    <div class="toc">
+      <strong>Table of Contents</strong>
+      <ul>
+        <li><a href="#important-talks">Important talks I attended</a></li>
+        <li><a href="#inspired-talks">Talks that inspired me</a></li>
+        <li><a href="#ramsey-animation">A short web animation on a classic Ramsey theory proof</a></li>
+      </ul>
+    </div>
+
+    <!-- Subheading 1 -->
+    <h2 id="important-talks">Important talks I attended</h2>
+    <p>Some important talks for research areas I am interested in that I attended include:</p>
+    <ul>
+      <li>Explicit p-Adic Methods for Rational Points (Jennifer Balakrishnan)</li>
+      <li>How many rational points can a curve have? (Michael Stoll)</li>
+      <li>Zariski Density of Grand Orbit Transversals in Arithmetic Dynamics (Joseph Silverman)</li>
+    </ul>
+
+    <!-- Subheading 2 -->
+    <h2 id="inspired-talks">Talks that inspired me</h2>
+    <p>I was inspired by <em>Quantitativity in the Mordell Conjecture</em> (Xinyi Yuan). Time permitting, I would like to post a short writeup on some topics I want to understand better and keep a record of for myself, including:</p>
+    <ul>
+      <li>How is Sylvester's conjecture implied by the rational curve problem?</li>
+      <li>What is the genus of a curve?</li>
+      <li>What are divisors? What is the Jacobian variety of a curve? Why are bad primes divisors? How are divisors used in Dimitrov-Gao-Haligger?</li>
+      <li>Why does it make sense for the discriminant to appear in the bound?</li>
+    </ul>
+    <p>I was also inspired by <em>Probabilistic Models for Galois Groups</em> (Will Sawin).</p>
+
+    <!-- Subheading 3 -->
+    <h2 id="ramsey-animation">A short web animation on a classic Ramsey theory proof</h2>
+    <p>I was inspired by <em>Recent Results in Ramsey Theory</em> (Rob Morris). Here is a short web animation I made that explains a Ramsey number proof from the introduction step by step.</p>
     
     <p>Define \(R(k)\) as the smallest number such that for any random coloring of edges on a complete graph, there must exist a monochromatic complete induced subgraph (clique) of size \(k\).</p>
     
@@ -95,7 +155,7 @@
     <p>I answer these two questions in my animation below.</p>
   </div>
 
-  <!-- The Stacked Images Container (Will expand up to 1600px) -->
+  <!-- The Stacked Images Container -->
   <div id="stack-container">
     <!-- JavaScript will load the images into this box -->
   </div>
@@ -116,7 +176,7 @@
 </div>
 
 <script>
-  // --- UPDATE THIS NUMBER TO MATCH YOUR TOTAL NUMBER OF EXPORTED PNGS ---
+  // --- UPDATED: Expects exactly 28 PNGs ---
   const totalFrames = 28; 
   
   const maxIndex = totalFrames - 1; 
