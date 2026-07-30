@@ -3,21 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ramsey number upper bound proof animation</title>
+<title>Ramsey Theory Animation</title>
+<!-- MathJax for rendering LaTeX math formulas -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>
   body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
     margin: 0;
-    padding: 20px;
-    background-color: #ffffff;
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+  }
+  .content-wrapper {
+    /* DOUBLED SIZE: Increased from 800px to 1600px so the slides are huge */
+    max-width: 1600px; 
+    width: 100%;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .text-content {
+    /* Keeps the essay text at a comfortable reading width */
+    max-width: 800px;
+    margin: 0 auto; 
+  }
+  h1 {
+    color: #2c3e50;
+    margin-top: 0;
   }
   #stack-container {
     position: relative;
     width: 100%;
-    max-width: 800px; /* Adjust this to fit your preference */
+    margin-top: 30px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    overflow: hidden;
   }
   .layer-img {
     position: absolute;
@@ -25,12 +51,11 @@
     left: 0;
     width: 100%;
     height: auto;
-    display: none; /* Hidden by default */
+    display: none; 
   }
   .slider-container {
     margin-top: 20px;
-    width: 80%;
-    max-width: 600px;
+    width: 100%;
     z-index: 10;
   }
   input[type=range] {
@@ -41,80 +66,104 @@
     margin-top: 10px;
     color: #666;
     font-size: 14px;
+    text-align: center;
+    margin-bottom: 30px;
   }
 </style>
 </head>
 <body>
 
-  <!-- The Stacked Images Container -->
+<div class="content-wrapper">
+  
+  <div class="text-content">
+    <h1>Recent Developments in Ramsey Theory</h1>
+    
+    <p>I really enjoyed the talk <em>Recent Results in Ramsey Theory</em> given by Robert Morris at the 2026 ICM.</p>
+    
+    <p>Define \(R(k)\) as the smallest number such that for any random coloring of edges on a complete graph, there must exist a monochromatic complete induced subgraph (clique) of size \(k\).</p>
+    
+    <p>Ramsey proved that as \(n\) gets sufficiently large, \(R(k)\) is finite. Erdős and Szekeres then were able to quantify an upper bound on \(R(k)\).</p>
+    
+    <p>To help myself better understand their proof, I discussed it with a friend afterwards. After thinking, researching, and writing and rewriting a bit more, I felt I understood it much better. Since Ramsey theory is a beautiful and exciting topic, I wanted to share my understanding as well.</p>
+    
+    <p>Given the algorithm, as described in my web animation, there were two points I was unsure about:</p>
+    <ol>
+      <li>How do we know that the majority set obtained is a clique?</li>
+      <li>How do we obtain the upper bound \(4^k\)?</li>
+    </ol>
+    
+    <p>I answer these two questions in my animation below.</p>
+  </div>
+
+  <!-- The Stacked Images Container (Will expand up to 1600px) -->
   <div id="stack-container">
     <!-- JavaScript will load the images into this box -->
   </div>
 
   <!-- The Slider -->
   <div class="slider-container">
-    <input type="range" id="frame-slider" min="1" max="25" value="1">
+    <input type="range" id="frame-slider" min="0" value="0">
   </div>
   
   <div class="instructions">
     Use the slider or your <b>Left / Right Arrow Keys</b> to navigate.
   </div>
 
-  <script>
-    // --- UPDATE THIS NUMBER TO MATCH YOUR TOTAL NUMBER OF EXPORTED PNGS ---
-    const totalFrames = 28; 
+  <div class="text-content">
+    <p>Note that to say anything about the lower bound is much harder. It also uses the probabilistic method. It has been a long time since I've looked at this, but I would love to write something up on this for my website at a later point.</p>
+  </div>
+
+</div>
+
+<script>
+  // --- UPDATE THIS NUMBER TO MATCH YOUR TOTAL NUMBER OF EXPORTED PNGS ---
+  const totalFrames = 25; 
+  
+  const maxIndex = totalFrames - 1; 
+  const stack = document.getElementById('stack-container');
+  const slider = document.getElementById('frame-slider');
+  slider.max = maxIndex;
+
+  for(let i = 0; i <= maxIndex; i++) {
+    let img = document.createElement('img');
+    let fileName = String(i).padStart(3, '0') + '.png';
+    img.src = fileName;
+    img.className = 'layer-img';
+    img.id = 'layer-' + i;
     
-    const stack = document.getElementById('stack-container');
-    const slider = document.getElementById('frame-slider');
-    slider.max = totalFrames;
-
-    // 1. Build the image stack in the HTML
-    for(let i = 1; i <= totalFrames; i++) {
-      let img = document.createElement('img');
-      // Assumes your files are named 1.png, 2.png, etc.
-      img.src = i + '.png';
-      img.className = 'layer-img';
-      img.id = 'layer-' + i;
-      
-      // Make the bottom layer (Layer 1) "relative" so it defines the height of the container
-      if(i === 1) {
-        img.style.position = 'relative'; 
-      }
-      
-      stack.appendChild(img);
+    if(i === 0) {
+      img.style.position = 'relative'; 
     }
+    stack.appendChild(img);
+  }
 
-    // 2. Function to show layers up to the slider's value
-    function updateSlide(val) {
-      for(let i = 1; i <= totalFrames; i++) {
-        let img = document.getElementById('layer-' + i);
-        if(i <= val) {
-          img.style.display = 'block'; // Show if it's below or equal to the slider value
-        } else {
-          img.style.display = 'none';  // Hide if it's ahead of the slider value
-        }
+  function updateSlide(val) {
+    for(let i = 0; i <= maxIndex; i++) {
+      let img = document.getElementById('layer-' + i);
+      if(i <= val) {
+        img.style.display = 'block';
+      } else {
+        img.style.display = 'none'; 
       }
-      slider.value = val;
     }
+    slider.value = val;
+  }
 
-    // Initialize the very first frame on load
-    updateSlide(1);
+  updateSlide(0);
 
-    // 3. Listen for mouse sliding
-    slider.addEventListener('input', (e) => {
-      updateSlide(e.target.value);
-    });
+  slider.addEventListener('input', (e) => {
+    updateSlide(parseInt(e.target.value));
+  });
 
-    // 4. Listen for Arrow Keys
-    document.addEventListener('keydown', (e) => {
-      let currentVal = parseInt(slider.value);
-      if (e.key === 'ArrowRight' && currentVal < totalFrames) {
-        updateSlide(currentVal + 1);
-      } else if (e.key === 'ArrowLeft' && currentVal > 1) {
-        updateSlide(currentVal - 1);
-      }
-    });
-  </script>
+  document.addEventListener('keydown', (e) => {
+    let currentVal = parseInt(slider.value);
+    if (e.key === 'ArrowRight' && currentVal < maxIndex) {
+      updateSlide(currentVal + 1);
+    } else if (e.key === 'ArrowLeft' && currentVal > 0) {
+      updateSlide(currentVal - 1);
+    }
+  });
+</script>
 
 </body>
 </html>
